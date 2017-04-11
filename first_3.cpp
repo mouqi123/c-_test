@@ -13,21 +13,32 @@ using namespace std;
  * @param num the number of byte of value.
  * @param value 
  **/
-void setIntArray(void* arr, int num, int value) {
-	int* b = static_cast<int*>(arr);
+void setIntArray(void* arr, int num, char value) {
+
+	char* b = static_cast<char*>(arr);
+
+    int n = 0;
+    while(n < num && ++n) *b++ = value;
 }
 
 int main()
 {
-	int value = 0; 
+    //char占一个字节
+	char value = '0'; 
+
+    //num是数组的长度
 	int num = 0;
 
-	cin >> value;
+    //input two value
+	cin >> value >> num;
 
-	int max_byte = (1 << 8) - 1;
+    int* a = new int[num];
 
-	int temp = value;
-	while (temp > max_byte) {
-		
-	}
+    void* b = static_cast<void*>(a);
+
+    setIntArray(b, 4*num, value);
+    
+    int n = 0;
+    while (n < num && ++n) cout << *a++ << endl;
+
 }
