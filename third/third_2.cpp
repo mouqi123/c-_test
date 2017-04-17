@@ -15,14 +15,29 @@ class LINT
 
 	public:
 
-        LINT(char* p): ptr(p) {
+        LINT(char* p) {
             char* itr = p;
             while(*itr++ != '\0') len++;
+
+			char* temp = new char[len];
+			ptr = temp;
+			itr = p;
+            while(*itr != '\0') *temp++ = *itr++;
         }
+
+		LINT(const LINT& l) {
+			this->len = l.length();
+			char* p = new char[this->len];
+			this->ptr = p;
+			char* itr = l.itr();
+			while(*itr != '\0') *p++ = *itr++;
+		}
 
         LINT Add(const LINT& L) {
 
+			cout << "new len is : " <<newLen <<endl;
             int newLen = this->length() > L.length() ? this->length() + 1 : L.length() + 1 ;
+			cout << "new len is : " <<newLen <<endl;
 
             char* newLINT = new char[newLen];
 
@@ -54,11 +69,21 @@ class LINT
             return result;
         }
 
-        char* rItr() {
+		char* itr() const{
+			return ptr;
+		}
+
+        char* rItr() const{
             return ptr + len - 1;
         }
 
-        int length() {
+		void print() const{
+			char* itr = ptr;
+			while(*itr != '\0') cout << *itr++;
+			cout << endl;
+		}
+
+        int length() const{
             return this->len;
         }
 
@@ -69,6 +94,9 @@ class LINT
 
 int main()
 {
-    LINT("1111111");
+    LINT l1("1111111");
+	LINT l2("2222222");
+	LINT l3 = l1.Add(l2);
+	l3.print();
 }
 
