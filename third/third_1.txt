@@ -1,0 +1,30 @@
+正确的输出为:
+Copy_initialization Constructor called.
+Copy_initialization Constructor called.
+OK! 
+Destructor called.
+Destructor called.
+P=30, 55
+Destructor called.
+Destructor called.
+Destructor called.
+
+
+首先在main函数的方法栈中构造TPoint的两个对象M,P
+然后在栈中构造另一个TPoint对象N,调用了拷贝构造函数，
+输出第一个Copy_initialization Constructor called.
+拷贝构造函数传递的是M的引用，由于成员变量X,Y都是原始类型，
+所以拷贝构造函数是一个值的拷贝。拷贝完之后，N和M将没有任何关联了。此时N为（20,35）
+
+调用Value函数，传参数时会用到拷贝构造函数将实参传给形参.输出第二个
+Copy_initialization Constructor called.
+然后在Value函数的运行时方法栈中输出"OK!"
+Value方法栈中构造了一个TPoint对象R,调用的传参构造.
+
+Value方法返回后，方法栈中的变量Q和R都要销毁释放内存，会调用其相应的析构函数.
+此时会连续输出两行Destructor called.
+
+返回的R是值返回，所以P此时的为（30,55），cout会输出 "P=30, 55"
+
+最后main方法结束，但是在它的方法栈中有M,P,N三个变量,编译器会在Main方法结束时插入
+相应的析构函数，所以这里会输出三行Destructor called.
