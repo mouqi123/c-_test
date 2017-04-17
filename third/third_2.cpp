@@ -30,14 +30,32 @@ class LINT
             int incr = 0;
 
             int i = newLen;
-            while (i-- > 0) {
-                if (i >= this->length()) *newLINT-- = 
 
+            char* thisItr = this->rItr();
+            char* otherItr = L.rItr();
+
+            while (i-- > 0) {
+                if (i >= this->length()) {
+                    *newLINT-- = *otherItr-- - '0' + incr;
+                    incr = 0;
+                }
+                else if (i >= L.length()) {
+                    *newLINT-- = *thisItr-- - '0' + incr;
+                    incr = 0;
+                } else {
+                    int k = *thisItr-- + *otherItr-- - '0' - '0';
+                    *newLINT-- = k/10;
+                    incr = k%10;
+                }
             }
+
+            LINT result(newLINT);
+
+            return result;
         }
 
         char* rItr() {
-            char* rItr = ptr + len - 1;
+            return ptr + len - 1;
         }
 
         int length() {
@@ -51,5 +69,6 @@ class LINT
 
 int main()
 {
+    LINT("1111111");
 }
 
