@@ -15,7 +15,7 @@ class LINT
 
 	public:
 
-        LINT(char* p) {
+        LINT(char* p): len(0) {
             char* itr = p;
             while(*itr++ != '\0') len++;
 
@@ -35,38 +35,39 @@ class LINT
 
         LINT Add(const LINT& L) {
 
-			cout << "new len is : " <<newLen <<endl;
             int newLen = this->length() > L.length() ? this->length() + 1 : L.length() + 1 ;
-			cout << "new len is : " <<newLen <<endl;
 
             char* newLINT = new char[newLen];
 
             //this variable is used to save the overflow bit.
             int incr = 0;
 
-            int i = newLen;
+            int i = 0;
 
             char* thisItr = this->rItr();
             char* otherItr = L.rItr();
 
-            while (i-- > 0) {
+            char* newItr = &newLINT[newLen-1];
+
+            for (i = 0; i < newLen - 1; i++) {
                 if (i >= this->length()) {
-                    *newLINT-- = *otherItr-- - '0' + incr;
+                    *newItr-- = *otherItr-- + incr;
                     incr = 0;
                 }
                 else if (i >= L.length()) {
-                    *newLINT-- = *thisItr-- - '0' + incr;
+                    *newItr-- = *thisItr-- + incr;
                     incr = 0;
                 } else {
-                    int k = *thisItr-- + *otherItr-- - '0' - '0';
-                    *newLINT-- = k/10;
-                    incr = k%10;
+                    int k =  (*thisItr-- - '0') + (*otherItr-- - '0') + incr;
+                    *newItr-- = k%10 + '0';
+                    incr = k/10;
                 }
             }
+            *newItr = incr + '0';
 
-            LINT result(newLINT);
-
-            return result;
+            LINT* result = new LINT(newLINT);
+            delete newLINT;
+            return *result;
         }
 
 		char* itr() const{
@@ -74,11 +75,12 @@ class LINT
 		}
 
         char* rItr() const{
-            return ptr + len - 1;
+            return &ptr[len-1];
         }
 
 		void print() const{
 			char* itr = ptr;
+            while(*itr == '0' && ++itr);
 			while(*itr != '\0') cout << *itr++;
 			cout << endl;
 		}
@@ -94,9 +96,10 @@ class LINT
 
 int main()
 {
-    LINT l1("1111111");
-	LINT l2("2222222");
+    LINT l1("1000000000000");
+	LINT l2("2000000000000");
+    l1.print(); l2.print();
 	LINT l3 = l1.Add(l2);
-	l3.print();
+    l3.print();
 }
 
