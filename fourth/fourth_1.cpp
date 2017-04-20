@@ -59,7 +59,14 @@ class MyString
 			return -1;
 		}
 
-		MyString Mid(int start, int length) {
+        int lastIndex(char c) {
+            for (int i = len -1; i >=0; --i) {
+                if (data[i] == c) return i;
+            }
+            return -1;
+        }
+
+		MyString& Mid(int start, int length) {
 			if (start < 0 || start >= len - 1 || start + length  > len  )
 				throw std::runtime_error(string("mystring is out of bound"));
 
@@ -89,7 +96,7 @@ class MyString
 			return this->data;
 		}
 
-		MyString operator+(const MyString& rhs) {
+		MyString& operator+(const MyString& rhs) {
 			int length = this->length() + rhs.length();
 
 			char* newStr = new char[length];
@@ -100,31 +107,34 @@ class MyString
 			while (*firstItr != '\0') *itr++ = *firstItr++; 
 			while (*secondItr != '\0') *itr++ = *secondItr++; 
 
+            *itr = '\0';
 			MyString* ms = new MyString(newStr);
 			delete newStr;
 			return *ms;
 		}
 
-		friend MyString operator+(const char* a, const MyString b) {
+        /*MyString& operator+(const char* a) {
 			const char* p = a;
 			int l = 0;
 			while (*p++ !='\0') l++;
-			int length = l + b.length();
+			int length = l + this->length();
 
 			char* newStr = new char[length];
 			char* itr = newStr;
 
 			const char* firstItr = a;
-			const char* secondItr = b.itr();
+			const char* secondItr = this->itr();
 			while (*firstItr != '\0') *itr++ = *firstItr++; 
 			while (*secondItr != '\0') *itr++ = *secondItr++; 
+
+            *itr = '\0';
 
 			MyString* ms = new MyString(newStr);
 			delete newStr;
 			return *ms;
-		}
+		}*/
 		
-		friend MyString operator+(const string a, const MyString b) {
+		friend MyString& operator+(const string a, const MyString b) {
 			int length = a.length() + b.length();
 
 			char* newStr = new char[length];
@@ -135,6 +145,7 @@ class MyString
 			while (*firstItr != '\0') *itr++ = *firstItr++; 
 			while (*secondItr != '\0') *itr++ = *secondItr++; 
 
+            *itr = '\0';
 			MyString* ms = new MyString(newStr);
 			delete newStr;
 			return *ms;
@@ -146,7 +157,7 @@ class MyString
 			return out;
 		}
 
-		MyString operator=(const MyString& rhs) {
+		MyString& operator=(const MyString& rhs) {
 			this->len = rhs.length();
 			char* newStr = new char[len];
 			this->data = newStr;
@@ -162,9 +173,10 @@ int main()
 	MyString s1("China"), s2;
 
 	s2 = "Love";
+    cout << "last Index of "<<s2.lastIndex('e')<<endl;
 
-	cout <<"s2 is " << s2;
-
+    MyString s5 = "I" + s1+ s2;
+    cout <<s5;
 	//cout << "I" + s2 + s1;
 
 	int pos = s1.Find('a');  // pos is 4, or zero if  'a'  is not found.
