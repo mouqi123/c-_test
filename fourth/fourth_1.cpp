@@ -152,9 +152,11 @@ class MyString
 		}
 
 		friend ostream & operator<<(ostream & out, MyString& ms) {
-			string s = ms.itr();
-			out << s <<endl;
-			return out;
+			const char* itr = ms.itr();
+            while (*itr != '\0') out << *itr++;
+            out <<endl;
+            return out;
+
 		}
 
 		MyString& operator=(const MyString& rhs) {
@@ -175,9 +177,7 @@ int main()
 	s2 = "Love";
     cout << "last Index of "<<s2.lastIndex('e')<<endl;
 
-    MyString s5 = "I" + s1+ s2;
-    cout <<s5;
-	//cout << "I" + s2 + s1;
+	cout << "I" + s2 + s1;
 
 	int pos = s1.Find('a');  // pos is 4, or zero if  'a'  is not found.
 
