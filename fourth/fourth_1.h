@@ -1,5 +1,5 @@
-#ifndef CIRCLE_H
-#define CIRCLE_
+#ifndef MYSTRING_H 
+#define MYSTRING_H
 
 #include<iostream>
 #include<string>
